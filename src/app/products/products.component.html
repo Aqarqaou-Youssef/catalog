@@ -1,0 +1,39 @@
+<div class="container mt-3">
+  <ng-template #errors>
+    <div class="text-danger"> {{errorMessage}}</div>
+  </ng-template>
+  <div class="card" *ngIf="products; else errors">
+    <div class="card-header">Products lList</div>
+    <div class="card-body">
+      <table class="table ">
+        <thead>
+        <tr>
+          <th>ID</th><th>Name</th><th>Price</th><th>Promotion</th><th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of products">
+          <td>{{p.id}}</td>
+          <td>{{p.name}}</td>
+          <td>{{p.price}}</td>
+          <td>
+            <i *ngIf="p.promotion==true" class="bi bi-heart-fill"></i>
+            <i *ngIf="p.promotion==false" class="bi-heart"></i>
+          </td>
+          <td>
+            <span *ngIf="p.promotion==true">
+              <button class="btn btn-outline-dark"> Promotion Enabled</button>
+            </span>
+            <span *ngIf="p.promotion==false">
+              <button class="btn btn-outline-dark"> Promotion Disabled</button>
+            </span>
+          </td>
+          <td><button class="btn btn-outline-dark" (click)="handleDeleteProduct(p)">
+            <i class="bi bi-trash"></i>
+          </button></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
