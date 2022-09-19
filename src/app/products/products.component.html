@@ -5,10 +5,21 @@
   <div class="card" *ngIf="products; else errors">
     <div class="card-header">Products lList</div>
     <div class="card-body">
+
+      <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchProduct()">
+        <div class="input-group">
+          <label class="input-group-text">Keyword</label>
+          <input type="text" class="form-control" formControlName="keyword">
+          <button class="btn btn-outline-dark">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+
       <table class="table ">
         <thead>
         <tr>
-          <th>ID</th><th>Name</th><th>Price</th><th>Promotion</th><th>Action</th>
+          <th>ID</th><th>Name</th><th>Price</th>
         </tr>
         </thead>
         <tbody>
@@ -17,23 +28,23 @@
           <td>{{p.name}}</td>
           <td>{{p.price}}</td>
           <td>
-            <i *ngIf="p.promotion==true" class="bi bi-heart-fill"></i>
-            <i *ngIf="p.promotion==false" class="bi-heart"></i>
+            <i *ngIf="p.promotion==true" class="bi bi-heart-fill mx-5"></i>
+            <i *ngIf="p.promotion==false" class="bi-heart mx-5"></i>
+              <button *ngIf="authService.hasRole('ADMIN')" (click)="handleSetPromotion(p)" [ngClass]="p.promotion==true?'btn-danger':'btn-success'" class="btn ">
+                <span *ngIf="p.promotion==true">Promo Off</span>
+                <span *ngIf="p.promotion==false">Promo On</span>
+              </button>
           </td>
-          <td>
-            <span *ngIf="p.promotion==true">
-              <button class="btn btn-outline-dark"> Promotion Enabled</button>
-            </span>
-            <span *ngIf="p.promotion==false">
-              <button class="btn btn-outline-dark"> Promotion Disabled</button>
-            </span>
-          </td>
-          <td><button class="btn btn-outline-dark " (click)="handleDeleteProduct(p)">
+          <td *ngIf="authService.hasRole('ADMIN')"><button class="btn btn-outline-dark " (click)="handleDeleteProduct(p)">
             <i class="bi bi-trash"></i>
           </button></td>
         </tr>
         </tbody>
       </table>
+      <ul class="nav nav-pills">
+        <li *ngFor="let item of [].constructor(this.totalPages); let i= index">
+        <a (click)="gotoPage(i)" [ngClass]="i==currentPage?'btn-dark text-white':'btn-outline-dark'" class="btn btn-outline-dark ms-1 mt-1"> {{i}} </a></li>
+      </ul>
     </div>
   </div>
 </div>
